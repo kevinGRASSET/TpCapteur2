@@ -37,6 +37,7 @@ public class TP2_Exercice1 extends FragmentActivity implements OnMapReadyCallbac
     TextView Latitude2;
     TextView Longitude2;
     TextView Distance;
+    LatLng latLng3 = null;
 
 
     @Override
@@ -44,8 +45,7 @@ public class TP2_Exercice1 extends FragmentActivity implements OnMapReadyCallbac
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tp2__exercice1);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
         Latitude2 = (TextView) findViewById(R.id.textView);
@@ -84,7 +84,7 @@ public class TP2_Exercice1 extends FragmentActivity implements OnMapReadyCallbac
                         LatLng latLng = new LatLng(latitude, longitude);
 
                         LatLng latLng2 = new LatLng(location.getLatitude(), location.getLongitude());
-                        LatLng latLng3 = null;
+
                         //Instancie la classe Geocoder
                         Geocoder geocoder = new Geocoder(getApplicationContext());
 
