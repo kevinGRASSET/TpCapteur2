@@ -3,6 +3,10 @@ package com.example.grassetk.tpcapteurs;
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -39,6 +43,11 @@ public class TP2_Exercice1 extends FragmentActivity implements OnMapReadyCallbac
     TextView Distance;
     LatLng latLng3 = null;
 
+    private SensorManager mSensorManager;
+    private Sensor mStepSensor;
+    private TextView podometre;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +60,11 @@ public class TP2_Exercice1 extends FragmentActivity implements OnMapReadyCallbac
         Latitude2 = (TextView) findViewById(R.id.textView);
         Longitude2 = (TextView) findViewById(R.id.textView2);
         Distance = (TextView) findViewById(R.id.textView3);
+
+        podometre = (TextView) findViewById(R.id.podometre);
+
+        mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
+        mStepSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR);
 
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
@@ -208,4 +222,34 @@ public class TP2_Exercice1 extends FragmentActivity implements OnMapReadyCallbac
         Distance.setText("" + meter + " M");
         return Radius * c;
     }
+
+
+    protected void onResume()
+    {
+        super.onResume();
+        mSensorManager.registerListener(mSensorEventListener, mStepSensor, SensorManager.SENSOR_DELAY_NORMAL);
+    }
+
+    protected void onPause() {
+        super.onPause();
+        mSensorManager.unregisterListener(mSensorEventListener);
+    }
+
+    private SensorEventListener mSensorEventListener = new SensorEventListener() {
+        private int mStep;
+
+        @Override
+        public void onAccuracyChanged(Sensor sensor, int accuracy) {
+
+        }
+
+        @Override
+        public void onSensorChanged(SensorEvent event) {
+            if (event.values[0] == 1.0f) {
+                mStep++;
+            }
+            podometre.setText(Integer.toString(mStep));
+        }
+    };
+
 }
